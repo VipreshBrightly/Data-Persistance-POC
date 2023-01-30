@@ -1,16 +1,22 @@
 package org.acme;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import io.quarkus.hibernate.reactive.panache.Panache;
+import io.smallrye.mutiny.Uni;
 
-@Path("/hello")
+import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
+@Path("/author")
+@ApplicationScoped
 public class GreetingResource {
 
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello from RESTEasy Reactive";
+    @POST
+    public Uni<String> addAuthor(Author author) {
+        System.out.println(author.book.title);
+       return Panache.<Author>withTransaction(author::persist).onItem()
+               .transform(inserted->inserted.id.toString());
     }
+
+
 }
