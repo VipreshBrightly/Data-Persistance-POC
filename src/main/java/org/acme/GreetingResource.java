@@ -1,8 +1,6 @@
 package org.acme;
 
 import io.quarkus.hibernate.reactive.panache.Panache;
-import io.quarkus.panache.common.Sort;
-import io.smallrye.mutiny.Multi;
 import io.smallrye.mutiny.Uni;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,5 +18,10 @@ public class GreetingResource {
                .transform(inserted->inserted.id.toString());
     }
 
+    @GET
+    @Path("/{id}")
+    public Uni<Author> findAuthor(long id){
+        return Author.findById(id);
+    }
 
 }

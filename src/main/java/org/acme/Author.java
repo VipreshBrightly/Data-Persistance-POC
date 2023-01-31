@@ -1,14 +1,10 @@
 package org.acme;
 
-import io.quarkiverse.hibernate.types.json.JsonBinaryType;
-import io.quarkiverse.hibernate.types.json.JsonTypes;
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.vertx.core.json.JsonObject;
-import lombok.Data;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @Entity(name="Author")
 public class Author extends PanacheEntityBase {
@@ -18,13 +14,15 @@ public class Author extends PanacheEntityBase {
     @GeneratedValue
     Long id;
 
-//    @Type(type = "jsonb")
-//    @Column(columnDefinition = "jsonb") // or, json
-//    Book book;
-
     @Column(columnDefinition = "json")
     @Convert(converter = StringToJson.class)
-    String jsonObject;
+    String stringJson;
+
+    JsonObject jsonObject;
+
+    @Column(columnDefinition = "json")
+    @Convert(converter = HashMapConvertor.class)
+    Map<String, Object> jsonMap;
 
     public Long getId() {
         return id;
@@ -34,12 +32,28 @@ public class Author extends PanacheEntityBase {
         this.id = id;
     }
 
-    public String getJsonObject() {
+    public String getStringJson() {
+        return stringJson;
+    }
+
+    public void setStringJson(String stringJson) {
+        this.stringJson = stringJson;
+    }
+
+    public JsonObject getJsonObject() {
         return jsonObject;
     }
 
-    public void setJsonObject(String jsonObject) {
+    public void setJsonObject(JsonObject jsonObject) {
         this.jsonObject = jsonObject;
+    }
+
+    public Map<String, Object> getJsonMap() {
+        return jsonMap;
+    }
+
+    public void setJsonMap(Map<String, Object> jsonMap) {
+        this.jsonMap = jsonMap;
     }
 }
 
