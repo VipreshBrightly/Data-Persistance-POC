@@ -26,11 +26,11 @@ public class HashMapConverter implements AttributeConverter<Map<String, Object>,
     }
 
     @Override
-    public Map<String, Object> convertToEntityAttribute(String customerInfoJSON) {
+    public Map<String, Object> convertToEntityAttribute(String customerAttributeJSON) {
 
         Map<String, Object> customerInfo = null;
         try {
-            customerInfo = objectMapper.readValue(customerInfoJSON, new TypeReference<HashMap<String, Object>>() {});
+            customerInfo = objectMapper.readValue(customerAttributeJSON, new TypeReference<HashMap<String, Object>>() {});
         } catch (final IOException e) {
             System.out.println("JSON reading error");
         }
